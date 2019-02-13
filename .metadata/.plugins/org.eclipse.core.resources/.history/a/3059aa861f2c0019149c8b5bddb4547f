@@ -1,0 +1,7 @@
+package com.tplink.pbook.dao;
+
+import com.tplink.pbook.bean.UserBean;
+
+public interface VerifyUserDao {
+	public boolean userVerification(UserBean userBean);
+}

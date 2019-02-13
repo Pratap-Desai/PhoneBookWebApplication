@@ -1,0 +1,86 @@
+package com.tplink.pbook.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.tplink.pbook.bean.ContactBean;
+import com.tplink.pbook.bean.GroupBean;
+import com.tplink.pbook.util.DbConnectionUtil;
+
+public class GroupsDaoImpl {
+	private Connection con;
+
+	public GroupsDaoImpl() {
+		
+		con=DbConnectionUtil.getDBConnection();
+		
+	}
+
+	public boolean addANewGroups(GroupBean groupBean) {
+		PreparedStatement ps;
+		
+		try {
+			//contactBean.setContactId(generateContactId());
+			groupBean.setGroupId(generateGroupId());
+				System.out.println(groupBean.getGroupId());
+				//System.out.println(userBean.getVarificationCode());
+				ps = (PreparedStatement) con.prepareStatement("INSERT INTO pbook_groups_table VALUES (?,?,?)");
+				ps.setString(1, groupBean.getGroupId());
+				ps.setString(2, groupBean.getGroupName());
+				ps.setString(3, groupBean.getUserId());
+				int rs1=ps.executeUpdate();
+				return true;
+			
+		} catch (SQLException e) {
+			System.out.println("exception"+e.getStackTrace());
+			return false;
+			
+		}
+			
+	}
+	private String generateGroupId() {
+		 return UUID.randomUUID().toString();
+	 }
+
+	public  JSONArray allUserGroups(String userId) {
+		// TODO Auto-generated method stub
+		System.out.println("in allUserGroups");
+		PreparedStatement ps;
+		JSONObject grpObj; 
+		 JSONArray grpArray = new JSONArray(); 
+		 
+			try {
+				ps = (PreparedStatement) con.prepareStatement("SELECT * from pbook_groups_table where user_id=?");
+				ps.setString(1, userId);
+				ResultSet rs=ps.executeQuery();
+				while(rs.next()){
+					grpObj = new JSONObject(); 
+					grpObj.put("group_id",rs.getString(1)); 
+					grpObj.put("group_name",rs.getString(2));
+					grpObj.put("ph_num_primary",rs.getString(3));
+					grpArray.put(grpObj);
+				
+				}
+			} catch (SQLException e) {
+				grpObj = new JSONObject(); 
+				grpObj.put("ERROR","ERROR");
+				grpArray.put(grpObj);
+				e.printStackTrace();
+			}
+			return contactArray;
+	
+		return null;
+	}
+
+	public boolean deletePerticularGroups(String groupsId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+}

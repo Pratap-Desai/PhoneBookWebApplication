@@ -1,0 +1,5 @@
+package com.tplink.pbook.bean;
+
+public class MyJaxbBean {
+
+}

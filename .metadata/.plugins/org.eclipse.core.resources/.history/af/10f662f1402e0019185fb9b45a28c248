@@ -1,0 +1,15 @@
+package com.tplink.pbook.service;
+
+import com.tplink.pbook.bean.ContactBean;
+import com.tplink.pbook.dao.ContactsDaoImpl;
+
+public class Contacts {
+
+	ContactsDaoImpl addContactsDaoImpl;
+	public boolean addAContact(ContactBean contactBean) {
+		addContactsDaoImpl=new ContactsDaoImpl();
+		return addContactsDaoImpl.addANewContact(contactBean);
+		
+	}
+	
+}

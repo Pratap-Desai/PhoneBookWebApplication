@@ -1,0 +1,29 @@
+package com.tplink.pbook.service;
+
+import org.json.JSONArray;
+
+import com.tplink.pbook.bean.GroupBean;
+import com.tplink.pbook.dao.GroupsDaoImpl;
+
+public class Groups {
+
+GroupsDaoImpl groupsDaoImpl;
+	
+	public boolean addAGroups(GroupBean groupBean) {
+		groupsDaoImpl=new GroupsDaoImpl();
+		return groupsDaoImpl.addANewGroups(groupBean);
+		
+	}
+	
+	
+	public JSONArray getAllGroups(String userId){
+		GroupsDaoImpl=new GroupsDaoImpl(); 
+		return GroupsDaoImpl.allUserGroups(userId); 
+		}
+	public boolean  deleteAcontact(String contactId) { 
+		GroupsDaoImpl=new GroupsDaoImpl();
+		return GroupsDaoImpl.deletePerticularGroups(GroupsId);
+	  
+	  }
+	 
+}

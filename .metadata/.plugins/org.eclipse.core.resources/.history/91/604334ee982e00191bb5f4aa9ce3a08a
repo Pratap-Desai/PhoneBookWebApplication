@@ -1,0 +1,220 @@
+package com.tplink.pbook.controllers;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.tplink.pbook.bean.ContactBean;
+import com.tplink.pbook.bean.GroupBean;
+import com.tplink.pbook.bean.GroupedContactsBean;
+import com.tplink.pbook.service.Contacts;
+import com.tplink.pbook.service.Groups;
+
+
+@Controller
+public class PbookController {
+
+	private static final Logger LOGGER = Logger.getLogger(PbookController.class.getName());
+
+	Contacts contact=new Contacts();
+	Groups group=new Groups();
+	
+	@RequestMapping(value = "/groups", method = RequestMethod.GET, produces="application/json")
+	public @ResponseBody String  hometr( Model model, HttpServletResponse response) {
+		
+		//ArrayList<MyJaxbBean> myJaxbBeanlist=new ArrayList<MyJaxbBean>();
+		String m=new String("my response");
+		LOGGER.info("groups Page Requested" );
+		
+		 JSONObject obj; 
+		 JSONArray array = new JSONArray(); 
+		 for (int i=0;i<3;i++) {
+		 
+		  obj = new JSONObject(); 
+		  obj.put("id","idUser"); obj.put("email","emailUser");
+		 obj.put("password", "motPassUser"); 
+		 array.put(obj);
+		 }
+		 //model.addAttribute("employees", array);
+	       // return "jsonTemplate";
+		/*
+		 * try { //response.getWriter().write("tata tata tata"+array.toString()); }
+		 * catch (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */ 
+		  //return new MyJaxbBean("Agamemnon", 32);
+		 return array.toString();
+		
+		/*MyJaxbBean obj;
+		for (int i=0;i<3;i++) {
+			obj = new MyJaxbBean("Agamemnon", 32);
+			myJaxbBeanlist.add(obj);
+	    }
+		return myJaxbBeanlist;
+			}*/
+
+	}
+	
+	@RequestMapping(value = "/add_new_contact", method = RequestMethod.POST, produces="application/json")
+	public @ResponseBody String  addContact( @RequestBody  ContactBean contactBean ,HttpSession session, HttpServletResponse response,HttpServletRequest request) {
+		JSONObject obj; 
+		 JSONArray array = new JSONArray(); 
+		 System.out.println("con num= "+contactBean.getNumPrimary());
+		 System.out.println("con name= "+contactBean.getConName());
+		 System.out.println("uid name= "+session.getAttribute("uid").toString());
+		 contactBean.setUserId(session.getAttribute("uid").toString());
+		if(contact.addAContact(contactBean)) {
+			obj=new JSONObject();
+			obj.put("result", "Success");
+			array.put(obj);
+		
+			//return "Success";
+		}else {
+			obj=new JSONObject();
+			obj.put("result", "Failed");
+			array.put(obj);
+			
+		}
+		return array.toString();
+		
+	}
+	
+	@RequestMapping(value = "/add_new_group", method = RequestMethod.POST, produces="application/json")
+	public @ResponseBody String  addGroup( @RequestBody  GroupBean groupBean ,HttpSession session, HttpServletResponse response,HttpServletRequest request) {
+		JSONObject obj; 
+		 JSONArray array = new JSONArray(); 
+		 System.out.println("grp name= "+groupBean.getGroupName());
+		 System.out.println("uid name= "+session.getAttribute("uid").toString());
+		 groupBean.setUserId(session.getAttribute("uid").toString());
+		if(group.addAGroups(groupBean)) {
+			obj=new JSONObject();
+			obj.put("result", "Success");
+			array.put(obj);
+		
+			//return "Success";
+		}else {
+			obj=new JSONObject();
+			obj.put("result", "Failed");
+			array.put(obj);
+			
+		}
+		return array.toString();
+		
+	}
+
+	
+	//deleteContact
+	@RequestMapping(value = "/deleteContact", method = RequestMethod.POST, produces="application/json")
+	public @ResponseBody String  deleteAContact( @RequestBody  ContactBean contactBean ,HttpSession session, HttpServletResponse response,HttpServletRequest request) {
+		JSONObject obj; 
+		 JSONArray array = new JSONArray(); 
+		 System.out.println("con num= "+contactBean.getContactId());
+		 contactBean.setUserId(session.getAttribute("uid").toString());
+		if(contact.deleteAcontact(contactBean.getContactId())) {
+			obj=new JSONObject();
+			obj.put("result", "Success");
+			array.put(obj);
+		
+			//return "Success";
+		}else {
+			obj=new JSONObject();
+			obj.put("result", "Failed");
+			array.put(obj);
+			
+		}
+		return array.toString();
+		
+	}
+	
+	@RequestMapping(value = "/deleteGroup", method = RequestMethod.POST, produces="application/json")
+	public @ResponseBody String  deleteAGroup( @RequestBody  GroupBean groupBean ,HttpSession session, HttpServletResponse response,HttpServletRequest request) {
+		JSONObject obj; 
+		 JSONArray array = new JSONArray(); 
+		 System.out.println("grp id= "+groupBean.getGroupId());
+		 groupBean.setUserId(session.getAttribute("uid").toString());
+		if(group.deleteAGroup(groupBean.getGroupId())) {
+			obj=new JSONObject();
+			obj.put("result", "Success");
+			array.put(obj);
+		
+			//return "Success";
+		}else {
+			obj=new JSONObject();
+			obj.put("result", "Failed");
+			array.put(obj);
+			
+		}
+		return array.toString();
+		
+	}
+	
+	
+	@RequestMapping(value = "/displayContacts", method = RequestMethod.GET, produces="application/json")
+	public @ResponseBody String  displayAllContacts( HttpSession session, HttpServletResponse response) {
+		
+		//ArrayList<MyJaxbBean> myJaxbBeanlist=new ArrayList<MyJaxbBean>();
+		LOGGER.info("displayAllContacts Requested" );
+		
+		 JSONArray contactsArray = contact.getAllContacts(session.getAttribute("uid").toString());
+		 return contactsArray.toString();
+
+	}
+	//
+	@RequestMapping(value = "/displayGroups", method = RequestMethod.GET, produces="application/json")
+	public @ResponseBody String  displayAllGroups( HttpSession session, HttpServletResponse response) {
+		
+		//ArrayList<MyJaxbBean> myJaxbBeanlist=new ArrayList<MyJaxbBean>();
+		LOGGER.info("displayGroups Requested" );
+		
+		// JSONArray contactsArray = group.getAllContacts(session.getAttribute("uid").toString());
+		JSONArray contactsArray = group.getAllGroups(session.getAttribute("uid").toString());
+		return contactsArray.toString();
+
+	}
+	
+	@RequestMapping(value = "/add_contact_to_grp", method = RequestMethod.POST, produces="application/json")
+	public @ResponseBody String  addContacttoGrp(@RequestBody GroupedContactsBean groupedContactsBean, HttpSession session, HttpServletResponse response) {
+		
+		//ArrayList<MyJaxbBean> myJaxbBeanlist=new ArrayList<MyJaxbBean>();
+		LOGGER.info("displayGroups Requested" );
+		groupedContactsBean.getUserId(session.getAttribute("uid").toString());
+		// JSONArray contactsArray = group.getAllContacts(session.getAttribute("uid").toString());
+		
+		if(group.addAcontactToGrp(groupedContactsBean)) {
+			obj=new JSONObject();
+			obj.put("result", "Success");
+			array.put(obj);
+		
+			//return "Success";
+		}else {
+			obj=new JSONObject();
+			obj.put("result", "Failed");
+			array.put(obj);
+			
+		}
+		return array.toString();
+		
+		JSONArray contactsArray = ;
+		return contactsArray.toString();
+
+	}
+
+	
+
+}

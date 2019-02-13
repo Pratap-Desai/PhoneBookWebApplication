@@ -1,0 +1,11 @@
+package com.tplink.pbook.util;
+
+public class Constants {
+	private Constants() {};
+	
+	public static final String AllCAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static final String AllNUMS = "1234567890";
+	public static final String AllSMALL = "abcdefghijklmnopqrstuvwxyz";
+	public static final String AllSPL = "~!@#$%^&*()_+";
+	
+}

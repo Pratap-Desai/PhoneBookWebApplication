@@ -1,0 +1,277 @@
+var app = angular.module('PbookApp', []);
+app.controller('PbookController', function($scope, $http) {
+	$scope.contactActive = "active";
+	$scope.groupActive = "";
+	$scope.addVal = "Contact";
+	$scope.hidegroups = true;
+	$scope.myForm = true;
+	$scope.indiContactsGroups=[];
+	$scope.allGroups = true;
+	$scope.contactKeyArray = [];
+	$scope.contactgroupKey = [];
+	$scope.groupKeyArray = [];
+	$scope.allContacts = false;
+	$scope.errorcontact = true;
+	$scope.indexofCon = null;
+	$scope.init = function() {
+		// window.alert("init");
+		$scope.contactKeyArray = [];
+		$scope.myForm = true;
+		$scope.myCForm = true;
+		$scope.addVal = "Contact";
+		$scope.contactActive = "active";
+		$scope.groupActive = "";
+		// $scope.dropdw=true;
+		$http({
+			method : "GET",
+			url : "displayContacts"
+		}).then(function mySuccess(response) {
+			$scope.availableContacts = response.data;
+		});
+	};
+
+	$scope.initOnGroups = function() {
+		// window.alert("init");
+		$scope.groupKeyArray = [];
+		$scope.myForm = true;
+		$scope.myCForm = true;
+		$scope.indexofCon = null;
+		// $scope.dropdw=true;
+		$http({
+			method : "GET",
+			url : "displayGroups"
+		}).then(function mySuccess(response) {
+
+			$scope.availableGroups = response.data;
+		});
+	};
+
+	$scope.initContacts = function(cid) {
+		var obj = {};
+		obj.id = cid;
+		obj.value = true;
+		$scope.contactKeyArray.push(obj);
+
+	};
+
+	$scope.initGroups = function(gid) {
+		var obj = {};
+		obj.id = gid;
+		obj.value = true;
+		$scope.groupKeyArray.push(obj);
+
+	};
+	$scope.closeForm = function() {
+		$scope.myForm = true;
+
+	};
+	$scope.closeCForm = function() {
+		$scope.myCForm = true;
+
+	};
+	$scope.toggleDrop = function(v) {
+		if ($scope.contactKeyArray[v].value) {
+			$scope.contactKeyArray[v].value = false;
+		} else {
+			$scope.contactKeyArray[v].value = true;
+		}
+	};
+	$scope.toggleGroupsDrop = function(v) {
+		if ($scope.groupKeyArray[v].value) {
+			$scope.groupKeyArray[v].value = false;
+		} else {
+			$scope.groupKeyArray[v].value = true;
+		}
+	};
+	$scope.formOpen = function(val) {
+		if (val == 'Contact') {
+			$scope.myForm = false;
+		} else {
+			$scope.myCForm = false;
+		}
+	};
+
+	$scope.onContacts = function() {
+		$scope.allContacts = false;
+		$scope.allGroups = true;
+		$scope.contactActive = "active";
+		$scope.groupActive = "";
+		$scope.addVal = "Contact";
+		$scope.init();
+	};
+
+	$scope.onGroups = function() {
+		$scope.allGroups = false;
+		$scope.allContacts = true;
+		$scope.groupActive = "active";
+		$scope.contactActive = "";
+		$scope.addVal = "Group";
+
+		$scope.initOnGroups();
+	};
+
+	$scope.add_new_contact = function() {
+		$http({
+			method : "POST",
+			url : "add_new_contact",
+			async : true,
+			contentType : 'application/json; charset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify($scope.contact)
+		}).then(function mySuccess(response) {
+			if (response.data[0].result == 'Success') {
+				$scope.init();
+			} else {
+				$scope.errorcontact = false;
+				$scope.errorAddingContact = "Error Adding Contact";
+			}
+		});
+	};
+
+	$scope.add_new_group = function() {
+		$http({
+			method : "POST",
+			url : "add_new_group",
+			async : true,
+			contentType : 'application/json; charset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify($scope.group)
+		}).then(function mySuccess(response) {
+			if (response.data[0].result == 'Success') {
+				// $scope.init(); //call initgroups()
+				$scope.initOnGroups();
+			} else {
+				$scope.errorcontact = false;
+				$scope.errorAddingContact = "Error Adding Contact";
+			}
+		});
+	};
+
+	$scope.deleteContact = function(conIndex) {
+		$http({
+			method : "POST",
+			url : "deleteContact",
+			contentType : 'application/json; charset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify({
+				'contactId' : $scope.contactKeyArray[conIndex].id
+			})
+		}).then(function mySuccess(response) {
+			if (response.data[0].result == 'Success') {
+				$scope.init();
+			} else {
+				$scope.errorcontact = false;
+				$scope.errorAddingContact = "Error Deleting Contact";
+			}
+		});
+
+	};
+	$scope.deleteGroup = function(grpIndex) {
+		$http({
+			method : "POST",
+			url : "deleteGroup",
+			contentType : 'application/json; charset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify({
+				'groupId' : $scope.groupKeyArray[grpIndex].id
+			})
+		}).then(function mySuccess(response) {
+			if (response.data[0].result == 'Success') {
+				$scope.initOnGroups();
+			} else {
+				$scope.errorcontact = false;
+				$scope.errorAddingContact = "Error Deleting Contact";
+			}
+		});
+
+	};
+
+	$scope.getContactAlreadyAddedgrp = function(conIndex) {
+console.log("getContactAlreadyAddedgrp");
+$scope.contactgroupKey=[];
+		$scope.indiContactsGroups=[];
+		$http({
+			method : "POST",
+			url : "ContactGroups",
+			contentType : 'application/json; charset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify({
+				'contactId' : $scope.contactKeyArray[conIndex].id
+			})
+		}).then(function mySuccess(response) {
+
+			$scope.indiContactsGroups=response.data;
+			console.log($scope.indiContactsGroups);
+			console.log("getContactAlreadyAddedgrp");
+		});
+
+	};
+
+	$scope.initConGroups = function(gid) {
+		console.log("initConGroups");
+		console.log("gid");
+		console.log(gid);
+		var obj = {};
+		obj.id = gid;
+		obj.value = false;
+		for(acongrp in $scope.indiContactsGroups){
+			console.log("in lopp");
+			console.log(acongrp);
+			console.log($scope.indiContactsGroups[acongrp].group_id);
+			
+			if($scope.indiContactsGroups[acongrp].group_id==gid){
+				obj.value = true;
+			}	
+		}
+				$scope.contactgroupKey.push(obj);
+				console.log($scope.contactgroupKey);
+				console.log("initConGroups");
+
+	};
+
+	$scope.addContactToGroup = function(conIndex) {
+		$scope.hidegroups = false;
+		$scope.getContactAlreadyAddedgrp(conIndex);
+		$scope.initOnGroups();
+		$scope.indexofCon = conIndex;
+
+	};
+	
+
+	$scope.addingAContactToGroup = function() {
+		console.log("HIII");
+		var subresult=[];
+		for(val in $scope.contactgroupKey){
+			if(val.value){
+				subresult.groupId=val.id;
+				subresult.contactId=$scope.contactKeyArray[$scope.indexofCon].id;
+			}
+		}
+		$http({
+			method : "POST",
+			url : "add_contact_to_grp",
+			async : true,
+			contentType : 'application/json; charset=utf-8',
+			dataType : 'json',
+			data : JSON.stringify(subresult)
+		}).then(function mySuccess(response) {
+			if (response.data[0].result == 'Success') {
+				$scope.init();
+			} else {
+				$scope.errorcontact = false;
+				$scope.errorAddingContact = "Error Adding Contact";
+			}
+		});
+	};
+	
+	$scope.logingout= function(){
+		console.log("in logout")
+		$http({
+			method : "GET",
+			url : "logout"
+		}).then(function mySuccess(response) {
+
+			$scope.logout= response.data;
+		});
+	};
+});

@@ -1,0 +1,16 @@
+package com.tplink.pbook.service;
+
+import com.tplink.pbook.bean.UserBean;
+import com.tplink.pbook.util.VerifyUser;
+
+public class VerifyUserImpl implements VerifyUser {
+
+	@Override
+	public boolean validateUser(UserBean userBean) {
+		// TODO Auto-generated method stub
+		
+		
+		return false;
+	}
+
+}

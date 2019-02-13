@@ -1,0 +1,10 @@
+package com.tplink.pbook.dao;
+
+import org.json.JSONArray;
+
+import com.tplink.pbook.bean.ContactBean;
+
+public interface ContactsDao {
+	public boolean addANewContact(ContactBean contactBean);
+	public	JSONArray allUserContacts(String userId);
+}

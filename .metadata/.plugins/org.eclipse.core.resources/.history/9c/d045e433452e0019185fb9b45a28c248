@@ -1,0 +1,7 @@
+package com.tplink.pbook.dao;
+
+import com.tplink.pbook.bean.ContactBean;
+
+public interface ContactsDao {
+	public boolean addANewContact(ContactBean contactBean);
+}

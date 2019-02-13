@@ -1,0 +1,11 @@
+package com.tplink.pbook.service;
+
+import com.tplink.pbook.bean.ContactBean;
+
+public class AddContact {
+
+	public boolean addAContact(ContactBean contactBean) {
+		return false;
+		
+	}
+}

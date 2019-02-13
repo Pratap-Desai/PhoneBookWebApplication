@@ -1,0 +1,64 @@
+package com.tplink.pbook.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.tplink.pbook.bean.UserBean;
+import com.tplink.pbook.util.DbConnectionUtil;
+
+public class VerifyUserDaoImpl implements VerifyUserDao {
+
+	private Connection con;
+
+	public AuthenticationDaoImpl() {
+		
+		con=DbConnectionUtil.getDBConnection();
+		
+	}
+
+	@Override
+	public boolean userVerification(UserBean userBean) {
+		// TODO Auto-generated method stub
+		
+		System.out.println("in auth");
+		System.out.println(userBean.getEmailId());
+		PreparedStatement ps;
+		String pass="";
+		int loginstatus=0;
+			try {
+				ps = (PreparedStatement) con.prepareStatement("SELECT * from user_pbook_table where email=?");
+				ps.setString(1, userBean.getEmailId());
+				ResultSet rs=ps.executeQuery();
+				if(rs.next()){
+				pass=rs.getString(3);
+				System.out.println("inside rs"+pass);
+				loginstatus=rs.getInt(7);
+				
+				System.out.println("inside rs"+loginstatus);
+				if (pass.equals(userBean.getuserPassword())) {
+					System.out.println("inside pass"+rs.getString(1));
+					userBean.setUserId(rs.getString(1));
+					if(updateLoginStatus(userBean, loginstatus)){
+					
+					return true;
+					}
+					return false;
+	
+				}
+				}
+				else{
+					
+					return false;
+				}
+			} catch (SQLException e) {
+				return false;
+			}
+			return false;
+
+	}
+	
+	
+
+}

@@ -1,0 +1,93 @@
+package com.tplink.pbook.service;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.tplink.pbook.bean.UserBean;
+import com.tplink.pbook.util.Authentication;
+import com.tplink.pbook.util.DbConnectionUtil;
+
+public class AuthenticationImpl implements Authentication {
+	private Connection con;
+
+	public AuthenticationImpl() {
+		
+		con=DbConnectionUtil.getDBConnection();
+		
+	}
+
+	@Override
+	public boolean authenticate(UserBean userBean) {
+		// TODO Auto-generated method stub
+		
+		
+		System.out.println("in auth");
+		System.out.println(userBean.getEmailId());
+		PreparedStatement ps;
+		String pass="";
+		int loginstatus=0;
+			try {
+				ps = (PreparedStatement) con.prepareStatement("SELECT * from user_pbook_table where email=?");
+				ps.setString(1, userBean.getEmailId());
+				ResultSet rs=ps.executeQuery();
+				if(rs.next()){
+				pass=rs.getString(3);
+				System.out.println("inside rs"+pass);
+				loginstatus=rs.getInt(7);
+				
+				System.out.println("inside rs"+pass);
+				if (pass.equals(userBean.getuserPassword())) {
+					System.out.println("inside pass");
+					
+					if(changeLoginStatus(userBean, loginstatus)){
+					
+					return true;
+					}
+					return false;
+	
+				}
+				}
+				else{
+					
+					return false;
+				}
+			} catch (SQLException e) {
+				return false;
+			}
+			return false;
+			
+	}
+
+	@Override
+	public String authorize(String userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean changeLoginStatus(UserBean userBean, int loginStatus) {
+		// TODO Auto-generated method stub
+		
+		PreparedStatement ps;
+	
+			
+		
+		if(loginStatus==0){
+			try {
+				ps = (PreparedStatement) con.prepareStatement("Update user_pbook_table set Loginstatus=1 where Userid=?" );
+				ps.setString(1, userBean.getUserId());
+				ResultSet rs=ps.executeQuery();
+				userBean.setLoginStatus(true);
+			return true;
+		}
+			catch (SQLException e) {
+				return false;
+			}
+		}
+		
+		return false;
+	}
+
+}

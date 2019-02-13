@@ -1,0 +1,5 @@
+package com.tplink.pbook.util;
+
+public interface Authentication {
+
+}

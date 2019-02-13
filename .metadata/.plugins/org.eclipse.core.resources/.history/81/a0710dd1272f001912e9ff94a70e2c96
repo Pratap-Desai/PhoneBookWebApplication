@@ -1,0 +1,73 @@
+package com.tplink.pbook.util;
+
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+
+
+public class DbConnectionUtil {
+	private static final String DRIVER="com.mysql.jdbc.Driver";
+	private static final String URl="jdbc:mysql://localhost:3306/pbookdb";
+	private static final String USERNAME="root";
+	private static final String PASSWORD="admin";
+	private static Connection con=null;
+	
+	
+	public static Connection getDBConnection(){
+		try {
+			Class.forName(DRIVER);
+		
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			if(con==null) {
+			con=(Connection) DriverManager.getConnection(URl, USERNAME, PASSWORD);
+			System.out.println("connected........");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return con;
+		
+
+}
+	public static void closeDBConnection(){
+		try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/*
+		public static void main(String[] args) {
+		Statement stmt;
+		ResultSet rs;
+		try{
+			DbConnectionUtil d=new DbConnectionUtil();
+			d.getDBConnection();
+		stmt = (Statement) con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+		rs = stmt.executeQuery("SELECT * FROM city");
+		while(rs.next()){
+		System.out.println(rs.getInt("ID") + " " + rs.getString("Name") + " " + rs.getString("CountryCode"));
+		}
+		}catch(Exception e){
+		System.err.println(e);
+		}
+		}
+	*/
+
+	public static void main(String[] args) {
+	
+		String result="[{\"groupId\":\"61bc2c4c-d9d4-4d1b-a1c1-cb253fa39d99\",\"contactId\":\"1445faac-321b-40b5-92e6-7fffea7c5410\"},{\"groupId\":\"16481f26-748c-455c-b452-a707a2d0c289\",\"contactId\":\"1445faac-321b-40b5-92e6-7fffea7c5410\"}]";
+	
+		String[] splited = result.split(",");
+	
+	}
+}

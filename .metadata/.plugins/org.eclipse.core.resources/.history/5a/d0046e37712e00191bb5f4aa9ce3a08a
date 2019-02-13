@@ -1,0 +1,26 @@
+package com.tplink.pbook.service;
+
+import org.json.JSONArray;
+
+import com.tplink.pbook.bean.ContactBean;
+import com.tplink.pbook.dao.ContactsDaoImpl;
+
+public class Contacts {
+
+	ContactsDaoImpl contactsDaoImpl;
+	
+	public boolean addAContact(ContactBean contactBean) {
+		contactsDaoImpl=new ContactsDaoImpl();
+		return contactsDaoImpl.addANewContact(contactBean);
+		
+	}
+	public JSONArray getAllContacts(String userId){
+		contactsDaoImpl=new ContactsDaoImpl();
+		return contactsDaoImpl.allUserContacts(userId);
+	}
+	public boolean deleteAcontact(String contactId) {
+		contactsDaoImpl=new ContactsDaoImpl();
+		return contactsDaoImpl.addANewContact(contactId);
+		
+	}
+}

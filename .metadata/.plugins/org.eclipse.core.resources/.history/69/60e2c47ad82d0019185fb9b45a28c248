@@ -1,0 +1,15 @@
+package com.tplink.pbook.bean;
+
+import java.util.Date;
+
+public class ContactBean {
+
+	private String contactId;
+	private String conName;
+	private String numPrimary;
+	private String numSecondary;
+	private String numAdditional;
+	private String conEmail;
+	private Date conDob;
+	private String userId;
+}

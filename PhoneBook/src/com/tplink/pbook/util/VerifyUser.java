@@ -1,0 +1,9 @@
+package com.tplink.pbook.util;
+
+import com.tplink.pbook.bean.UserBean;
+
+public interface VerifyUser {
+	public boolean validateUser(UserBean userBean);
+	public boolean generateSendVerificationCode(String email);
+	public boolean verifyCode(String email,String verificationCode);
+}

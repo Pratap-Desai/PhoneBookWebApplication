@@ -1,0 +1,8 @@
+package com.tplink.pbook.bean;
+
+public class GroupBean {
+
+	private String groupId;
+	private String groupName;
+	private String userId;
+}

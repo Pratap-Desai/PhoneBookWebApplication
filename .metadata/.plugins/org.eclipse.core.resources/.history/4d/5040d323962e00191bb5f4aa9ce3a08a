@@ -1,0 +1,7 @@
+package com.tplink.pbook.bean;
+
+public class GroupedContactsBean {
+
+	private String groupId;
+	private String groupId;
+}

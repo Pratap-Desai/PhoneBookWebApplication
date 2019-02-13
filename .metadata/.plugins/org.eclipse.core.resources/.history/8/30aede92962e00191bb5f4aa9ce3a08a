@@ -1,0 +1,25 @@
+package com.tplink.pbook.bean;
+
+public class GroupedContactsBean {
+
+	private String groupId;
+	private String contactId;
+	private String contactId;
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getContactId() {
+		return contactId;
+	}
+
+	public void setContactId(String contactId) {
+		this.contactId = contactId;
+	}
+
+}

@@ -1,0 +1,9 @@
+package com.tplink.pbook.dao;
+
+import com.tplink.pbook.bean.UserBean;
+
+public interface AuthenticationDao {
+	public boolean authenticateUser(UserBean userBean);
+	public boolean updateLoginStatus(UserBean userBean, int loginStatus);
+	public boolean logoutuser(String emailid);
+}

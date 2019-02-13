@@ -1,0 +1,12 @@
+package com.tplink.pbook.bean;
+
+public class ContactBean {
+
+	
+	private String conName;
+	private String numPrimary;
+	private String numSecondary;
+	private String conName;
+	private String conName;
+	private String conName;
+}

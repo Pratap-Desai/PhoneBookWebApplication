@@ -1,0 +1,103 @@
+package com.tplink.pbook.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Random;
+import java.util.UUID;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.tplink.pbook.bean.UserBean;
+import com.tplink.pbook.util.DbConnectionUtil;
+
+public class VerifyUserDaoImpl implements VerifyUserDao {
+	public static final String AllCAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static final String AllNUMS = "1234567890";
+	public static final String AllSMALL = "abcdefghijklmnopqrstuvwxyz";
+	private static final int VERIFICATIONCODELENGTH = 6;
+	private Connection con;
+
+	public VerifyUserDaoImpl() {
+		
+		con=DbConnectionUtil.getDBConnection();
+		
+	}
+
+	@Override
+	public boolean userVerification(UserBean userBean) {
+		// TODO Auto-generated method stub
+		
+		System.out.println("in verify");
+		System.out.println(userBean.getEmailId());
+		PreparedStatement ps;
+		String pass="";
+		int loginstatus=0;
+			try {
+				if(!verifyUniqueEmail(userBean.getEmailId())) {
+					System.out.println("not an Unique ID");
+					return false;
+				}
+				else{
+					
+					//INSERT INTO user_pbook_table (iduser, username, password, email, verification_code, verified,loginstatus)
+					//VALUES (10000,'Tom B. Erichsen','test','test@g.com','4006',0,0);
+//generate userId, Verification code
+					
+					userBean.setUserId(generateUserId());
+					userBean.setVarificationCode(generateVerificationCode());
+					System.out.println(userBean.getUserId());
+					System.out.println(userBean.getVarificationCode());
+					ps = (PreparedStatement) con.prepareStatement("INSERT INTO user_pbook_table (iduser, username, password, email, verification_code, verified,loginstatus)"
+							+ "VALUES (?,?,?,?,?,?,?)");
+					ps.setString(1, userBean.getUserId());
+					ps.setString(2, userBean.getUserName());
+					ps.setString(3, userBean.getuserPassword());
+					ps.setString(4, userBean.getEmailId());
+					ps.setString(5, userBean.getVarificationCode());
+					ps.setInt(6, 0);
+					ps.setInt(7, 0);
+					ResultSet rs1=ps.executeQuery();
+					return true;
+				}
+			} catch (SQLException e) {
+				return false;
+			}
+			
+
+	}
+	
+	private boolean verifyUniqueEmail(String emailId) {
+		PreparedStatement ps;
+	
+		try {
+			ps = (PreparedStatement) con.prepareStatement("SELECT * from user_pbook_table where email=?");
+			ps.setString(1,emailId);
+			ResultSet rs=ps.executeQuery();
+			if(rs.next()){
+			return false;
+			}
+			}
+			 catch (SQLException e) {
+					return false;
+				}
+				
+			return true;
+			
+	}
+	 private String generateUserId() {
+		 return UUID.randomUUID().toString();
+	 }
+	private String generateVerificationCode() {
+		
+		String allChoices=AllCAPS+AllNUMS+AllSMALL+AllNUMS;
+		int choiselen=allChoices.length();
+		Random num= new Random();
+		char [] code=new char[VERIFICATIONCODELENGTH];
+		for(int i=0;i<VERIFICATIONCODELENGTH;i++) {
+			code[i]=allChoices.charAt(num.nextInt(choiselen));
+		}
+		return code.toString();
+		
+	}
+
+}

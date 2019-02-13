@@ -1,0 +1,99 @@
+<%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page session="false"%>
+<html>
+<head>
+<title>Home</title>
+</head>
+<input type="hidden" id="refreshed" value="no">
+<script type="text/javascript">
+onload=function(){
+var e=document.getElementById("refreshed");
+if(e.value=="no")e.value="yes";
+else{e.value="no";location.reload();}
+}
+</script>
+<body>
+	<h1>Hello world!</h1>
+
+	<P>The time on the server is ${serverTime}.</p>
+
+	<form action="myuser" method="post">
+		<input type="text" name="userName"><br>
+		<input type="text" name="userType"><br> 
+		<input type="submit" value="Login">
+	</form>
+</body>
+</html> --%>
+<%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="s"%>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style>
+H1{
+	font-family:Algerian, sans-serif;
+	color:#E08A16;
+	text-outline:#000;
+}
+
+body{
+	background: url(resource/img/SKY2.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	font-size:36px
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<body >
+<div>
+
+<H1 align="center" >YAANAKA TRAVELS</H1>
+<H6 style="color:#E08A16" align="center" > <pre>                                                     .......The Journey Begins Here</pre></H6>
+
+</div>
+<center>
+
+<s:form action="login" method="post" modelAttribute="credentialsBean" >
+<font color="#000">
+<table border="1" >
+<tr>
+<th>USER-ID:</th>
+<td><s:input path="userID" type="text" />
+</td>
+</tr>
+
+<tr>
+<TH>PASSWORD:</TH>
+<TD>
+<s:input path="password" type="password"/>
+</TD>
+<th><label style="color: red;">${errMsg1}</label></th>
+</tr>
+<tr>
+<th colspan="2">
+<input type="submit" value="LOGIN" /> 
+</th>
+</tr>
+</table>
+</font>
+<font size=5px color="#FFFFFF" >
+<div class="login-help">
+    <a style="color:#90F" href="CustomerRegistration">Register</a> • <a style="color:#C00" href="forgotpass">Forgot Password</a>
+  </div>
+  </font>
+</s:form>
+</center>
+
+</body>
+</html>

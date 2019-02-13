@@ -1,0 +1,33 @@
+1549487566967	Move file
+1549488286594	Move 'dispatcher-servlet.xml' to 'WEB-INF'
+1549489897349	Move 'test-servlet.xml' to 'WEB-INF'
+1549491081960	Copy file
+1549491286672	Delete element
+1549492177629	Rename resource 'controllers'
+1549503580879	Move 'index.jsp' to 'WebContent'
+1549503617827	Delete element
+1549508311946	Rename resource 'dispatcher-servlet.xml'
+1549508765287	Move 'home.jsp' to 'views'
+1549508767901	Move 'user.jsp' to 'views'
+1549508824063	Delete element
+1549514746013	Rename resource 'user.jsp'
+1549579150971	Rename resource 'spring-servlet.xml'
+1549580008733	Rename resource 'userpage.jsp'
+1549580146065	Delete element
+1549598196273	Rename package 'com.tplink.model'
+1549598228670	Rename package 'com.tplink.mycontrollers'
+1549655832134	Rename type 'User'
+1549661602874	Encapsulate field 'userPasswordAgain'
+1549663092974	Copy compilation unit
+1549663113020	Rename type 'Authentication'
+1549663186177	Copy compilation unit
+1549663200897	Rename type 'AuthenticationImpl'
+1549663754249	Copy compilation unit
+1549663768158	Rename type 'VerifyUser'
+1549663862993	Copy compilation unit
+1549663945779	Rename type 'VerifyUserImpl'
+1549663965095	Rename type 'AuthenticationImplDao'
+1549688070686	Move file
+1549738418097	Rename resource 'images'
+1549739245729	Move folder
+1549741426933	Move 'img' to 'WebContent'

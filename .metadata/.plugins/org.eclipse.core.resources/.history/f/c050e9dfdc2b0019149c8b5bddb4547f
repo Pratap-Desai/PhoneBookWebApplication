@@ -1,0 +1,8 @@
+package com.tplink.pbook.util;
+
+public interface Authentication {
+	public boolean authenticate(UserBean userBean);
+	public String authorize(String userID);
+	public boolean changeLoginStatus(UserBean userBean, int loginStatus);
+}
+}

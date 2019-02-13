@@ -1,0 +1,10 @@
+package com.tplink.pbook.controllers;
+
+import java.util.logging.Logger;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class AddNewUsers {
+	private static final Logger LOGGER = Logger.getLogger(AddNewUsers.class.getName());
+}
